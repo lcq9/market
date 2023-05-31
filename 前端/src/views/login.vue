@@ -13,12 +13,6 @@
           <div class="item">
             <input type="password" class="inputItem" placeholder="请输入密码" v-model="user.password">
           </div>
-          <div class="item" style="text-align: left; display: flex" v-show="count === 3">
-            <input type="text" class="inputItem" style="flex: 1;" v-model="code">
-            <span @click="refreshCode" style="cursor: pointer; flex: 1;">
-              <Identify :identifyCode="identifyCode"></Identify>
-             </span>
-          </div>
           <div class="item">
             <button class="loginBtn" @click="login">登录</button>
           </div>
@@ -56,7 +50,6 @@
 <script>
 import API from "@/utils/request";
 import {resetRouter} from "@/router";
-import Identify from "@/components/common/Identify";
 
 
 export default {
@@ -66,18 +59,9 @@ export default {
       reset: {},
       dialogFormVisible: false,
       code: '',
-      count: 0,
-      user: {},
-      // 图片验证码
-      identifyCode: '',
-      // 验证码规则
-      identifyCodes: '3456789ABCDEFGHGKMNPQRSTUVWXY',
+      user: {}
     }
   },
-  mounted() {
-    this.refreshCode()
-  },
-  components: {Identify},
   methods: {
     goRegister() {
       this.$router.replace("/register")
@@ -102,17 +86,6 @@ export default {
         }
       })
     },
-    // 切换验证码
-    refreshCode() {
-      this.identifyCode = ''
-      this.makeCode(this.identifyCodes, 4)
-    },
-    // 生成随机验证码
-    makeCode(o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[Math.floor(Math.random() * (this.identifyCodes.length))]
-      }
-    },
     login() {
       if (!this.user.username) {
         this.$message({
@@ -128,16 +101,6 @@ export default {
         })
         return;
       }
-      if (this.count === 3) {
-        if (this.code !== this.identifyCode) {
-          this.$message({
-            type: "error",
-            message: "验证码错误"
-          })
-          return;
-        }
-      }
-
       API.post("/api/user/login", this.user).then(res => {
         if (res.code === '0') {
           this.$message({
@@ -148,10 +111,10 @@ export default {
           // 重置路由
           resetRouter(JSON.parse(JSON.stringify(res.data.permission)))
 
-          if (res.data.role.includes(1)) {
-            this.$router.replace("/manage/home")
-          } else {
+          if (res.data.role.includes(2)) {
             this.$router.replace("/front/home")
+          } else {
+            this.$router.replace("/manage/home")
           }
 
         } else {
@@ -159,7 +122,6 @@ export default {
             type: "error",
             message: res.msg
           })
-          this.count++
         }
       })
     }

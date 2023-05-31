@@ -99,7 +99,7 @@ function getPermissions(permissions) {
     let manage = {
         path: '/manage', name: 'Manage', component: () => import("../layout/manage"),
         children: [
-            {path: 'person', name: '个人信息', component: () => import("../views/manage/person")}
+            { path: 'person', name: '个人信息', component: () => import("../views/manage/person") }
         ]
     }
     // 设置路由菜单

@@ -1,10 +1,9 @@
 <template>
   <div>
     <div style="padding: 5px 0">
-      <el-input v-model="text" @keyup.enter.native="load" style="width: 200px" placeholder="根据角色名称搜索"><i slot="prefix" class="el-input__icon el-icon-search"></i></el-input>
+      <el-input v-model="text" @keyup.enter.native="load" style="width: 200px" placeholder="根据角色名称搜索"> <i slot="prefix"  class="el-input__icon el-icon-search"></i></el-input>
       <el-button @click="load" type="primary" size="mini" style="margin: 10px">搜索</el-button>
       <el-button @click="add" type="primary" size="mini" style="margin: 10px">新增</el-button>
-
     </div>
     <el-table
         :data="tableData"

@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     register() {
+      console.log(this.user)
       if (!this.user.username) {
         this.$message({
           type: "error",

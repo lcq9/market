@@ -75,7 +75,6 @@
         </el-col>
 
       </el-row>
-
     </div>
   </div>
 </template>
@@ -174,6 +173,38 @@ export default {
       cart.push({count: this.num, goods: this.goods, goodsId: this.goods.id})
       this.$store.commit("setCarts", cart)
       this.$router.replace("/front/preOrder")
+    },
+    save() {  // 新增评论
+      if (!this.user.username) {
+        this.$message({
+          message: "请登录",
+          type: "warning"
+        });
+        return;
+      }
+      if (!this.entity.content) {
+        this.$message({
+          message: "请填写内容",
+          type: "warning"
+        });
+        return;
+      }
+      API.post("/api/message", this.entity).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            message: "评论成功",
+            type: "success"
+          });
+        } else {
+          this.$message({
+            message: res.msg,
+            type: "error"
+          });
+        }
+        this.entity = {}
+        this.loadMessage();
+        this.dialogFormVisible = false;
+      })
     },
     cancel() {
       this.dialogFormVisible = false;

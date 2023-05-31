@@ -82,7 +82,7 @@
           </el-card>
         </el-col>
 
-        <!--        销售排行-->
+<!--        销售排行-->
         <el-col :span="6">
           <el-card>
             <div style="padding: 10px 0; border-bottom: 2px solid dodgerblue; font-size: 20px; color: dodgerblue">销量排行榜</div>
@@ -148,10 +148,6 @@ export default {
       this.loadTable(id)
     },
     load() {
-      API.get("/api/banner").then(res => {
-        this.imgList = res.data
-      })
-
       API.get("/api/goods/recommend").then(res => {
         this.recommend = res.data
 

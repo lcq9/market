@@ -16,15 +16,7 @@
 
               <div style="padding: 10px 0; margin-top: 20px">
                 <div style="padding-left: 40px">
-                  <el-upload
-                      class="avatar-uploader"
-                      :action='uploadUrl'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  </el-upload>
+                    <img :src="imageUrl" class="avatar">
                 </div>
 
                 <el-form label-width="100px">
@@ -118,7 +110,6 @@ export default {
       entity: {},
       dialogFormVisible: false,
       vis: false,
-      uploadUrl: 'http://localhost:9999/files/upload',
       imageUrl: '',
       money: 0
     };
@@ -153,6 +144,7 @@ export default {
       API.get(url + this.user.id).then(res => {
         this.userInfo = res.data || {}
         this.imageUrl = "http://localhost:9999/files/" + res.data.avatar
+        console.log(this.imageUrl)
       })
     },
     save() {
@@ -170,46 +162,12 @@ export default {
     edit() {
       this.entity = JSON.parse(JSON.stringify(this.userInfo))
       this.dialogFormVisible = true;
-    },
-    handleAvatarSuccess(res) {
-      this.imageUrl = res.data;
-      this.entity = JSON.parse(JSON.stringify(this.userInfo))
-      this.entity.avatar = res.data;
-      this.save()
-    },
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isLt2M;
     }
   },
 };
 </script>
 
 <style scoped>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
-  text-align: center;
-}
 
 .avatar {
   width: 100px;
